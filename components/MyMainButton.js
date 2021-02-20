@@ -10,25 +10,25 @@ import {
 import Colors from "../constants/color";
 
 const MyMainButton = (props) => {
-  if (Platform.OS == "android") {
-    return (
-      <TouchableNativeFeedback activeOpacity={0.8} onPress={props.onPress}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>{props.children}</Text>
-        </View>
-      </TouchableNativeFeedback>
-    );
-  } else if (Platform.OS == "ios") {
-    return (
-      <TouchableOpacity activeOpacity={0.8} onPress={props.onPress}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>{props.children}</Text>
-        </View>
-      </TouchableOpacity>
-    );
+  let ButtonComponent = TouchableOpacity;
+  if (Platform.OS == "android" && Platform.Version >= 21) {
+    ButtonComponent = TouchableNativeFeedback;
   }
+  return (
+    <View style={styles.buttonContainer}>
+      <ButtonComponent activeOpacity={0.8} onPress={props.onPress}>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>{props.children}</Text>
+        </View>
+      </ButtonComponent>
+    </View>
+  );
 };
 const styles = StyleSheet.create({
+  buttonContainer: {
+    borderRadius: 25,
+    overflow: "hidden",
+  },
   button: {
     backgroundColor: Colors.primary,
     paddingVertical: 12,
